@@ -2,6 +2,10 @@ from jira import JIRA
 from app.core.config import settings
 
 class JiraService:
+    """
+    Service class responsible for all interactions with the Atlassian Jira API.
+    Acts as the 'Tool' layer for the AI Agent.
+    """
     def __init__(self):
         try:
             self.jira = JIRA(
@@ -14,8 +18,18 @@ class JiraService:
 
     def create_test_case(self, project_key: str, summary: str, description: str, parent_key: str = None):
         """
-        Creates a Test issue in Jira.
-        If parent_key is provided, creates a Sub-task linked to the parent.
+        Creates a Jira issue or sub-task.
+        
+        Design Decision:
+        - Handles the creation of both standard Stories and Sub-tasks.
+        - Implements a retry mechanism for 'Sub-task' vs 'Subtask' naming conventions
+          which vary between Jira Cloud configurations.
+        
+        Args:
+            project_key (str): The Jira project identifier (e.g., 'KAN').
+            summary (str): The title of the ticket.
+            description (str): The body content (supports Jira Wiki Markup).
+            parent_key (str, optional): If provided, creates a sub-task linked to this parent.
         """
         if not self.jira:
             return {"error": "Jira connection not available"}

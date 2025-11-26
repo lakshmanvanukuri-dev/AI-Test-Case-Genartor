@@ -17,6 +17,41 @@ This application acts as an intelligent QA Copilot, leveraging **Google Gemini A
     *   **Manual Entry**: Add custom test cases alongside generated ones.
 *   **Quality Assurance**: Ensures test coverage includes both "Happy Path" and "Error Handling" scenarios.
 
+## Architecture
+
+The application follows a modern Agentic workflow:
+
+```mermaid
+graph TD
+    User[User / QA Engineer] -->|Input User Story| UI[React Frontend]
+    UI -->|POST Request| API[FastAPI Backend]
+    API -->|Construct Prompt| Agent[Gemini AI Agent]
+    Agent -->|Generate Test Cases (JSON)| API
+    API -->|Return Data| UI
+    User -->|Review & Edit| UI
+    User -->|Click 'Save'| API
+    API -->|Execute Tool| Jira[Jira API]
+    Jira -->|Create Tickets| Project[Jira Project Board]
+```
+
+## Technical Implementation (Agent Concepts)
+
+This project demonstrates three key AI Agent concepts:
+
+1.  **Role-Playing & Prompt Engineering**: The AI is instructed to adopt the persona of a "Senior QA Lead," ensuring test cases cover edge cases and security scenarios, not just happy paths.
+2.  **Structured Output Enforcement**: The agent is constrained to return strict JSON data, allowing the frontend to render interactive, editable cards rather than unstructured text.
+3.  **Tool Use (API Integration)**: The system doesn't just generate text; it acts on the real world by interfacing with the Jira REST API to create linked issues and sub-tasks automatically.
+
+## Project Journey & Learnings
+
+**The Problem**: Manual test case creation is repetitive and prone to human error. QA teams spend more time writing documentation than testing.
+
+**The Solution**: An AI-powered assistant that drafts 80% of the work instantly, allowing humans to focus on the final 20% of refinement.
+
+**Challenges Overfaced**:
+*   **Jira API Complexity**: Handling the difference between "Sub-task" and "Subtask" issue types across different Jira configurations required robust error handling and retry logic.
+*   **AI Hallucinations**: Early versions of the prompt resulted in inconsistent formatting. We implemented strict Pydantic models and JSON cleaning logic in the backend to ensure reliability.
+
 ## Tech Stack
 
 *   **Frontend**: React, TypeScript, Tailwind CSS
