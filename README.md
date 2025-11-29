@@ -26,10 +26,10 @@ graph TD
     User[User / QA Engineer] -->|Input User Story| UI[React Frontend]
     UI -->|POST Request| API[FastAPI Backend]
     API -->|Construct Prompt| Agent[Gemini AI Agent]
-    Agent -->|Generate Test Cases (JSON)| API
+    Agent -->|Generate Test Cases JSON| API
     API -->|Return Data| UI
     User -->|Review & Edit| UI
-    User -->|Click 'Save'| API
+    User -->|Click Save| API
     API -->|Execute Tool| Jira[Jira API]
     Jira -->|Create Tickets| Project[Jira Project Board]
 ```
