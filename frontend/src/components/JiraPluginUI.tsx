@@ -35,7 +35,7 @@ const JiraPluginUI: React.FC = () => {
 
     try {
       // Call our Python Backend API
-      const response = await axios.post('http://localhost:8000/api/v1/generate', {
+      const response = await axios.post('http://localhost:8002/api/v1/generate', {
         user_story: userStory,
         acceptance_criteria: acceptanceCriteria
       });
@@ -56,7 +56,7 @@ const JiraPluginUI: React.FC = () => {
     setError(null);
     
     try {
-      await axios.post('http://localhost:8000/api/v1/export-to-jira', {
+      await axios.post('http://localhost:8002/api/v1/export-to-jira', {
         project_key: projectKey,
         parent_key: parentKey || null,
         test_cases: testCases
